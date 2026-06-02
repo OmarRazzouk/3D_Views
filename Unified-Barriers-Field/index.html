@@ -62,22 +62,25 @@
     shadow-intensity="1"
     exposure="1.2"
     environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
-    min-camera-orbit="auto auto 0.25m"
-    max-camera-orbit="auto auto 100m"
+    
   ></model-viewer>
 
   <script>
     const viewer = document.getElementById('viewer');
     const loading = document.getElementById('loading');
 
-    viewer.addEventListener('load', () => {
-      loading.style.display = 'none';
-    });
-
     viewer.addEventListener('preload', () => {
-      loading.style.display = 'block';
-    });
+    loading.style.display = 'block';
+  });
 
+  viewer.addEventListener('load', () => {
+    loading.style.display = 'none';
+
+    // الحل النهائي لمشكلة الزوم
+    viewer.minCameraOrbit = "auto auto 0.5m";
+    viewer.maxCameraOrbit = "auto auto 50m";
+  });
+    
     function changeHDRI() {
       viewer.environmentImage =
         viewer.environmentImage.includes("moon")
