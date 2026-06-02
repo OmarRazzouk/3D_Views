@@ -35,21 +35,6 @@
   </style>
 
   <style>
-  #loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #111;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 20px;
-    z-index: 999999;
-  }
 
   .spinner {
     width: 60px;
@@ -70,10 +55,24 @@
 
 <body>
 
-  <div id="loading">
+  <div id="loading" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  ">
+    
   <div class="spinner"></div>
   <div>Loading model...</div>
   </div>
+
 
   <div id="toolbar">
     <button onclick="viewer.resetCamera()">Reset View</button>
@@ -101,13 +100,15 @@
   loading.style.display = 'flex';
 
   viewer.addEventListener('load', () => {
-    // يختفي فقط بعد تحميل النموذج بالكامل
-    loading.style.display = 'none';
+  loading.style.display = 'none';
 
-    // حل مشكلة الزوم
-    viewer.minCameraOrbit = "auto auto 0.5m";
-    viewer.maxCameraOrbit = "auto auto 200m";
-  });
+  const orbit = viewer.getCameraOrbit();
+  const radius = orbit.radius;
+
+  // منع الدخول داخل الجدران في أول ثانية
+  viewer.minCameraOrbit = `auto auto ${radius * 0.4}`;
+  viewer.maxCameraOrbit = `auto auto ${radius * 5}`;
+ });
     
   viewer.addEventListener('camera-change', () => {
   const orbit = viewer.getCameraOrbit();
