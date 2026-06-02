@@ -109,15 +109,7 @@
   viewer.maxCameraOrbit = `auto auto ${radius * 5}`;
  });
     
-  viewer.addEventListener('camera-change', () => {
-  const orbit = viewer.getCameraOrbit();
 
-  // إذا اقترب المستخدم كثيرًا → اعتبره داخل غرفة
-  if (orbit.radius < 2) {
-    // نقطة داخل الغرفة (عدّلها حسب موقع غرفتك)
-    viewer.cameraTarget = "0m 1.5m 0m";
-  }
-    
 });
 
     function changeHDRI() {
