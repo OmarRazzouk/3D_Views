@@ -27,16 +27,6 @@
       cursor: pointer;
     }
 
-    #loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 20px;
-      display: none;
-    }
-
     model-viewer {
       width: 100vw;
       height: 100vh;
@@ -58,7 +48,7 @@
     align-items: center;
     color: white;
     font-size: 20px;
-    z-index: 9999;
+    z-index: 999999;
   }
 
   .spinner {
@@ -80,16 +70,16 @@
 
 <body>
 
+  <div id="loading">
+  <div class="spinner"></div>
+  <div>Loading model...</div>
+  </div>
+
   <div id="toolbar">
     <button onclick="viewer.resetCamera()">Reset View</button>
     <button onclick="viewer.autoRotate = !viewer.autoRotate">Toggle Rotate</button>
     <button onclick="changeHDRI()">Change HDRI</button>
   </div>
-
- <div id="loading">
-  <div class="spinner"></div>
-  <div>Loading model...</div>
- </div>
 
 
   <model-viewer id="viewer"
@@ -99,8 +89,8 @@
     shadow-intensity="1"
     exposure="1.2"
     environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
-    min-camera-orbit="auto auto 0.25m"
-    max-camera-orbit="auto auto 100m"
+    min-camera-orbit="auto auto 0.5m"
+    max-camera-orbit="auto auto 200m"
   ></model-viewer>
 
   <script>
@@ -116,8 +106,22 @@
 
     // حل مشكلة الزوم
     viewer.minCameraOrbit = "auto auto 0.5m";
-    viewer.maxCameraOrbit = "auto auto 50m";
+    viewer.maxCameraOrbit = "auto auto 200m";
   });
+    
+  viewer.addEventListener('camera-change', () => {
+  const orbit = viewer.getCameraOrbit();
+
+  // إذا اقترب المستخدم كثيرًا → اعتبره داخل غرفة
+  if (orbit.radius < 3) {
+    // نقطة داخل الغرفة (عدّلها حسب موقع غرفتك)
+    viewer.cameraTarget = "0m 1.5m 0m";
+  } else {
+    // خارج الغرفة → رجوع للمركز
+    viewer.cameraTarget = "0m 0m 0m";
+  }
+    
+});
 
     function changeHDRI() {
       viewer.environmentImage =
