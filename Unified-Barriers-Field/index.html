@@ -43,6 +43,39 @@
       background-color: #111;
     }
   </style>
+
+  <style>
+  #loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    z-index: 9999;
+  }
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #444;
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
 </head>
 
 <body>
@@ -53,7 +86,11 @@
     <button onclick="changeHDRI()">Change HDRI</button>
   </div>
 
-  <div id="loading">Loading...</div>
+ <div id="loading">
+  <div class="spinner"></div>
+  <div>Loading model...</div>
+ </div>
+
 
   <model-viewer id="viewer"
     src="model.glb"
@@ -62,25 +99,26 @@
     shadow-intensity="1"
     exposure="1.2"
     environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
-    
+    min-camera-orbit="auto auto 0.25m"
+    max-camera-orbit="auto auto 100m"
   ></model-viewer>
 
   <script>
-    const viewer = document.getElementById('viewer');
-    const loading = document.getElementById('loading');
+  const viewer = document.getElementById('viewer');
+  const loading = document.getElementById('loading');
 
-    viewer.addEventListener('preload', () => {
-    loading.style.display = 'block';
-  });
+  // يظهر فورًا عند فتح الصفحة
+  loading.style.display = 'flex';
 
   viewer.addEventListener('load', () => {
+    // يختفي فقط بعد تحميل النموذج بالكامل
     loading.style.display = 'none';
 
-    // الحل النهائي لمشكلة الزوم
+    // حل مشكلة الزوم
     viewer.minCameraOrbit = "auto auto 0.5m";
     viewer.maxCameraOrbit = "auto auto 50m";
   });
-    
+
     function changeHDRI() {
       viewer.environmentImage =
         viewer.environmentImage.includes("moon")
