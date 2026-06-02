@@ -88,8 +88,7 @@
     shadow-intensity="1"
     exposure="1.2"
     environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
-    min-camera-orbit="auto auto 0.5m"
-    max-camera-orbit="auto auto 200m"
+    
   ></model-viewer>
 
   <script>
@@ -101,9 +100,6 @@
 
   viewer.addEventListener('load', () => {
   loading.style.display = 'none';
-
-    // إعادة ضبط الكاميرا على المركز
-  viewer.cameraTarget = "0m 0m 0m";
     
   const orbit = viewer.getCameraOrbit();
   const radius = orbit.radius;
@@ -120,9 +116,6 @@
   if (orbit.radius < 3) {
     // نقطة داخل الغرفة (عدّلها حسب موقع غرفتك)
     viewer.cameraTarget = "0m 1.5m 0m";
-  } else {
-    // خارج الغرفة → رجوع للمركز
-    viewer.cameraTarget = "0m 0m 0m";
   }
     
 });
