@@ -102,6 +102,9 @@
   viewer.addEventListener('load', () => {
   loading.style.display = 'none';
 
+    // إعادة ضبط الكاميرا على المركز
+  viewer.cameraTarget = "0m 0m 0m";
+    
   const orbit = viewer.getCameraOrbit();
   const radius = orbit.radius;
 
