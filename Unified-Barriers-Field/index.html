@@ -70,7 +70,7 @@
   ">
     
   <div class="spinner"></div>
-  <div>Loading model...</div>
+  <div style="color:white;">Loading model...</div>
   </div>
 
 
@@ -88,7 +88,9 @@
     shadow-intensity="1"
     exposure="1.2"
     environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
-    
+    min-camera-orbit="auto auto 0.5m"
+    max-camera-orbit="auto auto 100m"
+
   ></model-viewer>
 
   <script>
@@ -104,11 +106,6 @@
   const orbit = viewer.getCameraOrbit();
   const radius = orbit.radius;
 
-  // منع الدخول داخل الجدران في أول ثانية
-  viewer.minCameraOrbit = `auto auto ${radius * 0.1}`;
-  viewer.maxCameraOrbit = `auto auto ${radius * 5}`;
- });
-    
 
 });
 
