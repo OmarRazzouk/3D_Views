@@ -78,7 +78,6 @@
   <div id="toolbar">
     <button onclick="viewer.resetCamera()">Reset View</button>
     <button onclick="viewer.autoRotate = !viewer.autoRotate">Toggle Rotate</button>
-    <button onclick="changeHDRI()">Change HDRI</button>
   </div>
 
 
@@ -90,7 +89,7 @@
     exposure="1.2"
     environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
     min-camera-orbit="auto auto 0.5m"
-    max-camera-orbit="auto auto 200m"
+    max-camera-orbit="auto auto 150m"
 
   ></model-viewer>
 
@@ -103,19 +102,8 @@
 
   viewer.addEventListener('load', () => {
   loading.style.display = 'none';
-    
-  const orbit = viewer.getCameraOrbit();
-  const radius = orbit.radius;
+  });
 
-
-});
-
-    function changeHDRI() {
-      viewer.environmentImage =
-        viewer.environmentImage.includes("moon")
-          ? "https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr"
-          : "https://modelviewer.dev/shared-assets/environments/moon_1k.hdr";
-    }
   </script>
 
 </body>
