@@ -3,26 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <title>3D Model Viewer</title>
+
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
   <style>
-    body { margin: 0; background: #111; }
+    body { margin: 0; background: #111; font-family: sans-serif; }
+
+    #toolbar {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    button {
+      padding: 8px 12px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
     model-viewer {
       width: 100vw;
       height: 100vh;
       background-color: #111;
     }
   </style>
+
+  <style>
+
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #444;
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
 </head>
+
 <body>
 
-  <model-viewer 
-    src="https://github.com/OmarRazzouk/3D_Views/releases/download/V1/model.glb"
+  <div id="loading" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  color: white;
+  ">
+    
+  <div class="spinner"></div>
+  <div>Loading model...</div>
+  </div>
+
+
+  <div id="toolbar">
+    <button onclick="viewer.resetCamera()">Reset View</button>
+    <button onclick="viewer.autoRotate = !viewer.autoRotate">Toggle Rotate</button>
+  </div>
+
+
+  <model-viewer id="viewer"
+    src="model.glb"
     camera-controls
     auto-rotate
     shadow-intensity="1"
-    exposure="1.1"
-    environment-image="neutral"
+    exposure="1.2"
+    environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
+    min-camera-orbit="auto auto 0.5m"
+    max-camera-orbit="auto auto 150m"
+
   ></model-viewer>
+
+  <script>
+  const viewer = document.getElementById('viewer');
+  const loading = document.getElementById('loading');
+
+  // يظهر فورًا عند فتح الصفحة
+  loading.style.display = 'flex';
+
+  viewer.addEventListener('load', () => {
+  loading.style.display = 'none';
+  });
+
+  </script>
 
 </body>
 </html>
